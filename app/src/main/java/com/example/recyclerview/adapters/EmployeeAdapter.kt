@@ -3,6 +3,8 @@ package com.example.recyclerview.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerview.LineItem
 import com.example.recyclerview.databinding.ListItemEmployeBinding
@@ -10,7 +12,7 @@ import com.example.recyclerview.databinding.ListItemEmployeBinding
 /**
  * Created by Sam Naduiev on 1/8/2023.
  */
-class EmployeeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EmployeeAdapter : ListAdapter<LineItem, RecyclerView.ViewHolder>(ItemsCallback) {
 
 	private val lineItems = mutableListOf<LineItem>()
 
@@ -49,6 +51,18 @@ class EmployeeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 				tvSurname.text = lineItem.surname
 				tvAge.text = lineItem.age.toString()
 			}
+		}
+
+	}
+
+	private object ItemsCallback : DiffUtil.ItemCallback<LineItem>() {
+
+		override fun areItemsTheSame(oldItem: LineItem, newItem: LineItem): Boolean {
+			return oldItem.id == newItem.id
+		}
+
+		override fun areContentsTheSame(oldItem: LineItem, newItem: LineItem): Boolean {
+			return oldItem == newItem
 		}
 
 	}
