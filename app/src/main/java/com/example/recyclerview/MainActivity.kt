@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import com.example.recyclerview.adapters.EmployeeAdapter
 import com.example.recyclerview.databinding.ActivityMainBinding
 import com.example.recyclerview.utils.SpacingDecoration
+import com.example.recyclerview.utils.addEmptyListObserver
 
 private const val OFFSET = 15
 
@@ -31,10 +32,11 @@ class MainActivity : AppCompatActivity() {
 	private fun initRecyclerView() {
 		binding.apply {
 			rvEmployees.apply {
-				adapter = employeeAdapter
+				adapter = employeeAdapter.also {
+					it.addEmptyListObserver(tvNoData)
+				}
 				addItemDecoration(SpacingDecoration(OFFSET))
 			}
-			tvNoData.isVisible = false
 		}
 	}
 
@@ -43,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 			{
 				employeeAdapter.setItems(generateRandomItems())
 				binding.apply {
-					tvNoData.isVisible = employeeAdapter.itemCount == 0
 					progressBar.isVisible = false
 				}
 			},
